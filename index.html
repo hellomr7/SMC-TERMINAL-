@@ -3,386 +3,203 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>SMC Institutional Desk | AI Chart Vision</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>APEX SMC | Institutional Trading Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
-          colors: {
-            amoled: {
-              bg: '#06090f',
-              card: '#0d131f',
-              elevated: '#141c2b',
-              border: '#1e293b',
-              gold: '#f59e0b',
-              bull: '#10b981',
-              bear: '#ef4444'
-            }
-          }
-        }
-      }
-    }
-  </script>
-  <style>
-    body {
-      background-color: #06090f;
-      color: #f1f5f9;
-      padding-bottom: 76px;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .glass-card {
-      background: #0d131f;
-      border: 1px solid #1e293b;
-      box-shadow: 0 8px 24px -6px rgba(0, 0, 0, 0.6);
-    }
-    .nav-bar {
-      background: rgba(13, 19, 31, 0.96);
-      backdrop-filter: blur(16px);
-      border-top: 1px solid #1e293b;
-    }
-    ::-webkit-scrollbar { width: 4px; height: 4px; }
-    ::-webkit-scrollbar-track { background: #06090f; }
-    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="min-h-screen font-sans antialiased selection:bg-amber-500/30 selection:text-amber-200">
+<body>
 
-  <!-- Minimalist Top App Bar -->
-  <header class="sticky top-0 z-40 bg-[#06090f]/95 backdrop-blur-md border-b border-slate-800/80 px-4 py-3">
-    <div class="max-w-xl mx-auto flex items-center justify-between">
-      <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-amber-500 to-yellow-300 flex items-center justify-center text-slate-950 font-mono font-extrabold text-xs shadow-lg shadow-amber-500/20">
-          SMC
-        </div>
+  <!-- Top Institutional Header -->
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-logo">A</div>
         <div>
-          <h1 class="text-sm font-bold tracking-tight text-white leading-none">SMC Vision Desk</h1>
-          <div class="flex items-center gap-1.5 mt-1">
-            <span id="kz-dot" class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
-            <span id="kz-status" class="text-[10px] font-mono font-medium text-emerald-400">LOADING SESSION...</span>
+          <div class="brand-title">APEX <span class="badge-pro">SMC PRO</span></div>
+          <div class="session-pill">
+            <span id="kz-dot" class="dot"></span>
+            <span id="kz-text">SYNCING SESSION...</span>
           </div>
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
-        <button onclick="toggleLanguage()" id="lang-btn" class="px-2.5 py-1.5 rounded-lg bg-[#141c2b] border border-slate-700/80 text-[11px] font-semibold text-slate-200 active:scale-95 transition">
-          বাংলা
-        </button>
-        <button onclick="toggleApiDrawer()" class="p-2 rounded-lg bg-[#141c2b] border border-slate-700/80 text-amber-400 active:scale-95 transition" title="API Key Settings">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><circle cx="12" cy="12" r="3"/></svg>
+      <div class="topbar-actions">
+        <button id="lang-btn" class="icon-btn text-btn" onclick="toggleLang()">বাংলা</button>
+        <button class="icon-btn" onclick="toggleModal('api-modal')" title="AI API Settings">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
         </button>
       </div>
     </div>
   </header>
 
-  <!-- Collapsible OpenRouter API Key Drawer -->
-  <div id="api-drawer" class="hidden max-w-xl mx-auto px-4 pt-3">
-    <div class="glass-card rounded-2xl p-4 border-amber-500/30 space-y-3">
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-amber-400">OpenRouter Free Vision API</span>
-        <a href="https://openrouter.ai/keys" target="_blank" rel="noopener" class="text-[11px] text-blue-400 underline font-mono">Get Free Key ↗</a>
-      </div>
-      <input type="password" id="or-api-key" placeholder="sk-or-v1-..." class="w-full bg-[#06090f] border border-slate-700 rounded-xl px-3 py-2.5 text-xs font-mono text-white focus:outline-none focus:border-amber-500" />
-      <div class="flex gap-2">
-        <select id="or-model-select" class="flex-1 bg-[#06090f] border border-slate-700 rounded-xl px-2.5 py-2 text-xs font-mono text-slate-200 focus:outline-none">
-          <option value="google/gemma-3-27b-it:free">Gemma 3 27B Vision (Free)</option>
-          <option value="meta-llama/llama-3.2-11b-vision-instruct:free">Llama 3.2 11B Vision (Free)</option>
-          <option value="qwen/qwen2.5-vl-72b-instruct:free">Qwen 2.5 VL 72B (Free)</option>
-        </select>
-        <button onclick="saveApiSettings()" class="px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs transition">
-          Save
-        </button>
-      </div>
-      <p id="api-status-msg" class="text-[11px] font-mono text-slate-400">Saved locally in your phone browser only.</p>
+  <!-- Main Workspace -->
+  <main class="container">
+
+    <!-- Pair Selector Strip -->
+    <div class="pair-strip">
+      <button class="pair-chip active" data-pair="XAU/USD" onclick="selectPair('XAU/USD')">
+        <span class="pair-name">XAU/USD</span>
+        <span class="pair-tag">GOLD</span>
+      </button>
+      <button class="pair-chip" data-pair="BTC/USDT" onclick="selectPair('BTC/USDT')">
+        <span class="pair-name">BTC/USDT</span>
+        <span class="pair-tag">CRYPTO</span>
+      </button>
+      <button class="pair-chip" data-pair="ETH/USDT" onclick="selectPair('ETH/USDT')">
+        <span class="pair-name">ETH/USDT</span>
+        <span class="pair-tag">CRYPTO</span>
+      </button>
+      <button class="pair-chip" data-pair="SOL/USDT" onclick="selectPair('SOL/USDT')">
+        <span class="pair-name">SOL/USDT</span>
+        <span class="pair-tag">CRYPTO</span>
+      </button>
+      <button class="pair-chip" data-pair="EUR/USD" onclick="selectPair('EUR/USD')">
+        <span class="pair-name">EUR/USD</span>
+        <span class="pair-tag">FX</span>
+      </button>
     </div>
-  </div>
 
-  <!-- MAIN CONTAINER -->
-  <main class="max-w-xl mx-auto px-4 pt-4 space-y-4">
-
-    <!-- ========================================== -->
-    <!-- TAB 1: AI VISION ANALYZER (DEFAULT VIEW)   -->
-    <!-- ========================================== -->
-    <section id="tab-ai" class="space-y-4">
-      
-      <!-- Pair Selector Pill Bar -->
-      <div class="flex items-center justify-between glass-card rounded-2xl p-2.5">
-        <span class="text-xs text-slate-400 pl-1 font-medium" data-i18n="selectPair">Select Pair</span>
-        <div class="flex gap-1.5 overflow-x-auto">
-          <button onclick="selectPair('XAU/USD')" data-pair="XAU/USD" class="pair-pill px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-amber-500 text-slate-950 transition">XAU/USD</button>
-          <button onclick="selectPair('BTC/USDT')" data-pair="BTC/USDT" class="pair-pill px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-[#141c2b] text-slate-300 transition">BTC</button>
-          <button onclick="selectPair('EUR/USD')" data-pair="EUR/USD" class="pair-pill px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-[#141c2b] text-slate-300 transition">EUR/USD</button>
-          <button onclick="selectPair('SOL/USDT')" data-pair="SOL/USDT" class="pair-pill px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-[#141c2b] text-slate-300 transition">SOL</button>
-        </div>
-      </div>
-
-      <!-- 3 Clean Chart Screenshot Upload Cards -->
-      <div class="glass-card rounded-2xl p-4 space-y-3">
-        <div class="flex items-center justify-between">
+    <!-- VIEW 1: AI CHART VISION ANALYZER -->
+    <section id="view-ai" class="view active">
+      <div class="card">
+        <div class="card-header">
           <div>
-            <h2 class="text-sm font-bold text-white" data-i18n="uploadTitle">Multi-Timeframe Chart Screenshots</h2>
-            <p class="text-[11px] text-slate-400 mt-0.5" data-i18n="uploadSub">Tap slots below to upload D1, H4, or H1 charts</p>
+            <h2 data-i18n="aiTitle">Institutional Chart Vision</h2>
+            <p data-i18n="aiSub">Upload D1, H4, H1 chart screenshots for SMC/ICT validation</p>
           </div>
-          <button onclick="clearImages()" class="text-[11px] font-mono text-slate-400 hover:text-rose-400 px-2 py-1 rounded-lg bg-[#141c2b]">
-            Reset
-          </button>
+          <button class="btn-ghost" onclick="resetCharts()" data-i18n="resetBtn">Reset</button>
         </div>
 
-        <div class="grid grid-cols-3 gap-2.5">
-          <!-- D1 -->
-          <label class="relative flex flex-col items-center justify-center h-28 rounded-xl border border-dashed border-slate-700 bg-[#06090f] hover:border-amber-500/60 cursor-pointer overflow-hidden transition active:scale-95">
-            <input type="file" accept="image/*" onchange="handleFile(event, 'D1')" class="hidden" />
-            <div id="slot-D1" class="flex flex-col items-center text-center p-2">
-              <span class="w-7 h-7 rounded-full bg-[#141c2b] flex items-center justify-center text-amber-400 font-bold text-sm mb-1">+</span>
-              <span class="text-xs font-mono font-bold text-white">D1</span>
-              <span class="text-[10px] text-slate-500">Trend</span>
+        <div class="upload-grid">
+          <label class="upload-box" id="box-D1">
+            <input type="file" accept="image/*" onchange="handleUpload(event, 'D1')" hidden />
+            <div class="upload-placeholder" id="preview-D1">
+              <div class="plus-ring">+</div>
+              <span class="tf-label">D1</span>
+              <span class="tf-hint">HTF Bias</span>
             </div>
           </label>
 
-          <!-- H4 -->
-          <label class="relative flex flex-col items-center justify-center h-28 rounded-xl border border-dashed border-slate-700 bg-[#06090f] hover:border-amber-500/60 cursor-pointer overflow-hidden transition active:scale-95">
-            <input type="file" accept="image/*" onchange="handleFile(event, 'H4')" class="hidden" />
-            <div id="slot-H4" class="flex flex-col items-center text-center p-2">
-              <span class="w-7 h-7 rounded-full bg-[#141c2b] flex items-center justify-center text-amber-400 font-bold text-sm mb-1">+</span>
-              <span class="text-xs font-mono font-bold text-white">H4</span>
-              <span class="text-[10px] text-slate-500">OB / FVG</span>
+          <label class="upload-box" id="box-H4">
+            <input type="file" accept="image/*" onchange="handleUpload(event, 'H4')" hidden />
+            <div class="upload-placeholder" id="preview-H4">
+              <div class="plus-ring">+</div>
+              <span class="tf-label">H4</span>
+              <span class="tf-hint">OB & FVG</span>
             </div>
           </label>
 
-          <!-- H1 -->
-          <label class="relative flex flex-col items-center justify-center h-28 rounded-xl border border-dashed border-slate-700 bg-[#06090f] hover:border-amber-500/60 cursor-pointer overflow-hidden transition active:scale-95">
-            <input type="file" accept="image/*" onchange="handleFile(event, 'H1')" class="hidden" />
-            <div id="slot-H1" class="flex flex-col items-center text-center p-2">
-              <span class="w-7 h-7 rounded-full bg-[#141c2b] flex items-center justify-center text-amber-400 font-bold text-sm mb-1">+</span>
-              <span class="text-xs font-mono font-bold text-white">H1 / 15M</span>
-              <span class="text-[10px] text-slate-500">Entry</span>
+          <label class="upload-box" id="box-H1">
+            <input type="file" accept="image/*" onchange="handleUpload(event, 'H1')" hidden />
+            <div class="upload-placeholder" id="preview-H1">
+              <div class="plus-ring">+</div>
+              <span class="tf-label">H1 / 15M</span>
+              <span class="tf-hint">CHoCH Entry</span>
             </div>
           </label>
         </div>
 
-        <button id="analyze-btn" onclick="runAIAnalysis()" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-400 hover:from-amber-400 hover:to-yellow-300 text-slate-950 font-bold text-sm shadow-lg shadow-amber-500/20 active:scale-[0.99] transition flex items-center justify-center gap-2">
-          <span>Analyze Chart with AI</span>
+        <button id="run-ai-btn" class="btn-primary" onclick="analyzeWithAI()">
+          <span data-i18n="analyzeBtn">Run SMC Vision Analysis</span>
         </button>
       </div>
 
-      <!-- AI Result Card -->
-      <div id="ai-result-card" class="hidden glass-card rounded-2xl p-4 space-y-3">
-        <div class="flex items-center justify-between border-b border-slate-800 pb-2.5">
-          <span class="text-xs font-mono font-bold text-amber-400">SMC / ICT DECISION REPORT</span>
-          <span id="ai-decision-pill" class="px-2.5 py-0.5 rounded-md text-[11px] font-mono font-bold bg-amber-500/20 text-amber-300">ANALYZED</span>
+      <!-- AI Output Card -->
+      <div id="result-card" class="card hidden">
+        <div class="card-header border-b">
+          <div class="result-title-group">
+            <span class="mono-label">AI VERDICT</span>
+            <span id="verdict-badge" class="verdict-badge wait">WAIT</span>
+          </div>
+          <button class="btn-save-journal" onclick="saveToJournal()">+ Journal</button>
         </div>
-        <div id="ai-report-body" class="text-xs sm:text-sm leading-relaxed text-slate-200 whitespace-pre-wrap font-sans"></div>
-        <button id="save-journal-btn" onclick="saveCurrentReportToJournal()" class="w-full py-2.5 rounded-xl bg-[#141c2b] hover:bg-slate-800 border border-slate-700 text-emerald-400 font-semibold text-xs transition">
-          + Save Setup to Journal
-        </button>
+        <div id="ai-report-text" class="report-content"></div>
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- TAB 2: LIVE TRADINGVIEW CHART              -->
-    <!-- ========================================== -->
-    <section id="tab-chart" class="hidden space-y-3">
-      <div class="glass-card rounded-2xl overflow-hidden">
-        <div class="px-3.5 py-2.5 border-b border-slate-800 flex items-center justify-between">
-          <span id="tv-header-title" class="text-xs font-mono font-bold text-white">XAU/USD Live Chart</span>
-          <span class="text-[10px] font-mono text-slate-400">TradingView Real-Time</span>
+    <!-- VIEW 2: LIVE TRADINGVIEW MARKET TERMINAL -->
+    <section id="view-chart" class="view">
+      <div class="card chart-card">
+        <div class="card-header">
+          <span id="chart-pair-title" class="mono-label">XAU/USD • LIVE FEED</span>
+          <span class="live-indicator">● REAL-TIME</span>
         </div>
-        <div id="tv-widget-box" class="w-full h-[68vh] bg-[#06090f]"></div>
+        <div id="tv-container" class="tv-frame"></div>
       </div>
     </section>
 
-    <!-- ========================================== -->
-    <!-- TAB 3: TRADE JOURNAL                       -->
-    <!-- ========================================== -->
-    <section id="tab-journal" class="hidden space-y-3">
-      <div class="glass-card rounded-2xl p-4 flex items-center justify-between">
-        <div>
-          <h2 class="text-sm font-bold text-white" data-i18n="journalTitle">Saved Trade Setups</h2>
-          <p class="text-[11px] text-slate-400" id="journal-count">0 setups stored locally</p>
+    <!-- VIEW 3: EXECUTION JOURNAL -->
+    <section id="view-journal" class="view">
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h2 data-i18n="journalTitle">Execution Journal</h2>
+            <p id="journal-stats">0 setups archived locally</p>
+          </div>
+          <button class="btn-danger-sm" onclick="clearJournal()">Clear</button>
         </div>
-        <button onclick="clearJournal()" class="px-3 py-1.5 rounded-xl bg-rose-500/15 text-rose-400 border border-rose-500/30 text-xs font-semibold">
-          Clear All
-        </button>
+        <div id="journal-feed" class="journal-list"></div>
       </div>
-      <div id="journal-list" class="space-y-2.5"></div>
     </section>
 
   </main>
 
-  <!-- FIXED MOBILE BOTTOM NAVIGATION BAR -->
-  <nav class="fixed bottom-0 inset-x-0 z-50 nav-bar">
-    <div class="max-w-xl mx-auto grid grid-cols-3 h-16">
-      <button onclick="switchTab('ai')" id="nav-ai" class="flex flex-col items-center justify-center gap-1 text-amber-400 transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
-        <span class="text-[11px] font-semibold">AI Vision</span>
-      </button>
-
-      <button onclick="switchTab('chart')" id="nav-chart" class="flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
-        <span class="text-[11px] font-semibold">Live Chart</span>
-      </button>
-
-      <button onclick="switchTab('journal')" id="nav-journal" class="flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-        <span class="text-[11px] font-semibold">Journal</span>
-      </button>
-    </div>
+  <!-- Bottom Mobile Tab Bar -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-target="view-ai" onclick="switchView('view-ai', this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </svg>
+      <span>AI Vision</span>
+    </button>
+    <button class="nav-item" data-target="view-chart" onclick="switchView('view-chart', this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
+        <polyline points="16 7 22 7 22 13"></polyline>
+      </svg>
+      <span>Market</span>
+    </button>
+    <button class="nav-item" data-target="view-journal" onclick="switchView('view-journal', this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+        <polyline points="14 2 14 8 20 8"></polyline>
+        <line x1="16" y1="13" x2="8" y2="13"></line>
+        <line x1="16" y1="17" x2="8" y2="17"></line>
+      </svg>
+      <span>Journal</span>
+    </button>
   </nav>
 
-  <script>
-    let lang = 'en';
-    let selectedPair = 'XAU/USD';
-    let chartImages = { D1: null, H4: null, H1: null };
-    let lastReportText = '';
-    let lastDecision = 'WAIT';
-    let tvLoaded = false;
+  <!-- OpenRouter API Key Modal -->
+  <div id="api-modal" class="modal-backdrop hidden">
+    <div class="modal-sheet">
+      <div class="modal-header">
+        <h3>OpenRouter Vision API</h3>
+        <button class="close-btn" onclick="toggleModal('api-modal')">&times;</button>
+      </div>
+      <p class="modal-desc">Stored locally in your browser. No credit card required for free vision models.</p>
+      <div class="form-group">
+        <label>API Key (<a href="https://openrouter.ai/keys" target="_blank">Get Free Key ↗</a>)</label>
+        <input type="password" id="api-key-input" placeholder="sk-or-v1-..." />
+      </div>
+      <div class="form-group">
+        <label>Vision Model</label>
+        <select id="model-select">
+          <option value="google/gemma-3-27b-it:free">Gemma 3 27B Vision (Free)</option>
+          <option value="meta-llama/llama-3.2-11b-vision-instruct:free">Llama 3.2 11B Vision (Free)</option>
+          <option value="qwen/qwen2.5-vl-72b-instruct:free">Qwen 2.5 VL 72B (Free)</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="saveApiConfig()">Save Configuration</button>
+    </div>
+  </div>
 
-    const TV_SYMBOLS = {
-      'XAU/USD': 'OANDA:XAUUSD',
-      'BTC/USDT': 'BINANCE:BTCUSDT',
-      'EUR/USD': 'FX:EURUSD',
-      'SOL/USDT': 'BINANCE:SOLUSDT'
-    };
-
-    const TEXTS = {
-      en: {
-        selectPair: 'Select Pair',
-        uploadTitle: 'Multi-Timeframe Chart Screenshots',
-        uploadSub: 'Tap slots below to upload D1, H4, or H1 charts',
-        journalTitle: 'Saved Trade Setups'
-      },
-      bn: {
-        selectPair: 'পেয়ার সিলেক্ট করুন',
-        uploadTitle: 'চার্ট স্ক্রিনশট আপলোড করুন',
-        uploadSub: 'নিচের বক্সে ট্যাপ করে D1, H4 বা H1 চার্ট দিন',
-        journalTitle: 'সেভ করা ট্রেড সেটআপ'
-      }
-    };
-
-    function toggleLanguage() {
-      lang = lang === 'en' ? 'bn' : 'en';
-      document.getElementById('lang-btn').textContent = lang === 'en' ? 'বাংলা' : 'EN';
-      document.querySelectorAll('[data-i18n]').forEach(el => {
-        const k = el.getAttribute('data-i18n');
-        if (TEXTS[lang][k]) el.textContent = TEXTS[lang][k];
-      });
-    }
-
-    // Live Session Kill Zone Status
-    function updateSession() {
-      const h = new Date().getUTCHours();
-      const el = document.getElementById('kz-status');
-      const dot = document.getElementById('kz-dot');
-      if (h >= 7 && h < 10) {
-        el.textContent = 'LONDON KILL ZONE • ACTIVE';
-        el.className = 'text-[10px] font-mono font-semibold text-emerald-400';
-        dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400';
-      } else if (h >= 12 && h < 15) {
-        el.textContent = 'NEW YORK KILL ZONE • ACTIVE';
-        el.className = 'text-[10px] font-mono font-semibold text-emerald-400';
-        dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-400';
-      } else if (h >= 0 && h < 6) {
-        el.textContent = 'ASIAN RANGE • ACCUMULATION';
-        el.className = 'text-[10px] font-mono font-semibold text-amber-400';
-        dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-400';
-      } else {
-        el.textContent = 'OFF-SESSION • LOW VOLUME';
-        el.className = 'text-[10px] font-mono font-medium text-slate-400';
-        dot.className = 'w-1.5 h-1.5 rounded-full bg-slate-500';
-      }
-    }
-    setInterval(updateSession, 10000);
-    updateSession();
-
-    // Bottom Navigation Switcher
-    function switchTab(tab) {
-      ['ai', 'chart', 'journal'].forEach(t => {
-        document.getElementById(`tab-${t}`).classList.toggle('hidden', t !== tab);
-        const nav = document.getElementById(`nav-${t}`);
-        nav.className = t === tab
-          ? 'flex flex-col items-center justify-center gap-1 text-amber-400 transition'
-          : 'flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-200 transition';
-      });
-
-      if (tab === 'chart' && !tvLoaded) {
-        loadTradingView();
-      }
-      if (tab === 'journal') {
-        renderJournal();
-      }
-    }
-
-    function selectPair(pair) {
-      selectedPair = pair;
-      document.querySelectorAll('.pair-pill').forEach(btn => {
-        const active = btn.getAttribute('data-pair') === pair;
-        btn.className = active
-          ? 'pair-pill px-3 py-1.5 rounded-xl text-xs font-mono font-bold bg-amber-500 text-slate-950 transition'
-          : 'pair-pill px-3 py-1.5 rounded-xl text-xs font-mono font-semibold bg-[#141c2b] text-slate-300 transition';
-      });
-      if (tvLoaded) loadTradingView();
-    }
-
-    function loadTradingView() {
-      tvLoaded = true;
-      document.getElementById('tv-header-title').textContent = `${selectedPair} Live Chart`;
-      const box = document.getElementById('tv-widget-box');
-      box.innerHTML = '';
-      const s = document.createElement('script');
-      s.src = 'https://s3.tradingview.com/tv.js';
-      s.async = true;
-      s.onload = () => {
-        new TradingView.widget({
-          autosize: true,
-          symbol: TV_SYMBOLS[selectedPair] || 'OANDA:XAUUSD',
-          interval: '240',
-          timezone: 'Etc/UTC',
-          theme: 'dark',
-          style: '1',
-          locale: 'en',
-          toolbar_bg: '#06090f',
-          enable_publishing: false,
-          hide_side_toolbar: true,
-          container_id: 'tv-widget-box'
-        });
-      };
-      box.appendChild(s);
-    }
-
-    // API Key Drawer
-    function toggleApiDrawer() {
-      document.getElementById('api-drawer').classList.toggle('hidden');
-    }
-
-    function saveApiSettings() {
-      const k = document.getElementById('or-api-key').value.trim();
-      const m = document.getElementById('or-model-select').value;
-      localStorage.setItem('smc_or_key', k);
-      localStorage.setItem('smc_or_model', m);
-      const msg = document.getElementById('api-status-msg');
-      msg.textContent = k ? '✅ API Key saved in browser!' : '⚠️ Key cleared.';
-      msg.className = k ? 'text-[11px] font-mono text-emerald-400' : 'text-[11px] font-mono text-amber-400';
-      if (k) setTimeout(() => document.getElementById('api-drawer').classList.add('hidden'), 800);
-    }
-
-    // Image Handling
-    function handleFile(e, tf) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = ev => {
-        const img = new Image();
-        img.onload = () => {
-          const canvas = document.createElement('canvas');
-          const max = 1280;
-          let w = img.width, h = img.height;
-          if (w > max || h > max) {
-            if (w > h) { h = Math.round(h * max / 
+  <script src="app.js"></script>
+</body>
+</html>
