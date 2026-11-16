@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>APEX SMC | Institutional Trading Terminal</title>
+  <title>APEX SMC | Institutional SMC & ICT Strategy Terminal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lightweight-charts@4.1.3/dist/lightweight-charts.standalone.production.js"></script>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -15,20 +16,20 @@
   <header class="topbar">
     <div class="topbar-inner">
       <div class="brand">
-        <div class="brand-logo">A</div>
+        <div class="brand-logo">SMC</div>
         <div>
-          <div class="brand-title">APEX <span class="badge-pro">SMC PRO</span></div>
+          <div class="brand-title">APEX <span class="badge-pro">INSTITUTIONAL</span></div>
           <div class="session-pill">
             <span id="kz-dot" class="dot"></span>
-            <span id="kz-text">SYNCING SESSION...</span>
+            <span id="kz-text">SYNCING KILL ZONE...</span>
           </div>
         </div>
       </div>
 
       <div class="topbar-actions">
-        <button id="lang-btn" class="icon-btn text-btn" onclick="toggleLang()">বাংলা</button>
-        <button class="icon-btn" onclick="toggleModal('api-modal')" title="AI API Settings">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <button id="lang-btn" class="icon-btn" onclick="toggleLang()">বাংলা</button>
+        <button class="icon-btn" onclick="toggleModal('api-modal')" title="AI Vision API Settings">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3"></circle>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
@@ -37,14 +38,13 @@
     </div>
   </header>
 
-  <!-- Main Workspace -->
   <main class="container">
 
     <!-- Pair Selector Strip -->
     <div class="pair-strip">
       <button class="pair-chip active" data-pair="XAU/USD" onclick="selectPair('XAU/USD')">
         <span class="pair-name">XAU/USD</span>
-        <span class="pair-tag">GOLD</span>
+        <span class="pair-tag">GOLD • SMC</span>
       </button>
       <button class="pair-chip" data-pair="BTC/USDT" onclick="selectPair('BTC/USDT')">
         <span class="pair-name">BTC/USDT</span>
@@ -60,80 +60,218 @@
       </button>
       <button class="pair-chip" data-pair="EUR/USD" onclick="selectPair('EUR/USD')">
         <span class="pair-name">EUR/USD</span>
-        <span class="pair-tag">FX</span>
+        <span class="pair-tag">FOREX</span>
       </button>
     </div>
 
-    <!-- VIEW 1: AI CHART VISION ANALYZER -->
+    <!-- ========================================== -->
+    <!-- VIEW 1: AI SMC CHART VISION ANALYZER       -->
+    <!-- ========================================== -->
     <section id="view-ai" class="view active">
       <div class="card">
         <div class="card-header">
           <div>
-            <h2 data-i18n="aiTitle">Institutional Chart Vision</h2>
-            <p data-i18n="aiSub">Upload D1, H4, H1 chart screenshots for SMC/ICT validation</p>
+            <h2 data-i18n="aiTitle">SMC Multi-Timeframe Vision</h2>
+            <p data-i18n="aiSub">Upload D1, H4, H1 charts for BOS, CHoCH, OB, FVG & Liquidity audit</p>
           </div>
           <button class="btn-ghost" onclick="resetCharts()" data-i18n="resetBtn">Reset</button>
         </div>
 
         <div class="upload-grid">
-          <label class="upload-box" id="box-D1">
+          <label class="upload-box">
             <input type="file" accept="image/*" onchange="handleUpload(event, 'D1')" hidden />
             <div class="upload-placeholder" id="preview-D1">
               <div class="plus-ring">+</div>
               <span class="tf-label">D1</span>
-              <span class="tf-hint">HTF Bias</span>
+              <span class="tf-hint">HTF Bias / PD</span>
             </div>
           </label>
 
-          <label class="upload-box" id="box-H4">
+          <label class="upload-box">
             <input type="file" accept="image/*" onchange="handleUpload(event, 'H4')" hidden />
             <div class="upload-placeholder" id="preview-H4">
               <div class="plus-ring">+</div>
               <span class="tf-label">H4</span>
-              <span class="tf-hint">OB & FVG</span>
+              <span class="tf-hint">BOS / OB / FVG</span>
             </div>
           </label>
 
-          <label class="upload-box" id="box-H1">
+          <label class="upload-box">
             <input type="file" accept="image/*" onchange="handleUpload(event, 'H1')" hidden />
             <div class="upload-placeholder" id="preview-H1">
               <div class="plus-ring">+</div>
               <span class="tf-label">H1 / 15M</span>
-              <span class="tf-hint">CHoCH Entry</span>
+              <span class="tf-hint">LTF CHoCH</span>
             </div>
           </label>
         </div>
 
         <button id="run-ai-btn" class="btn-primary" onclick="analyzeWithAI()">
-          <span data-i18n="analyzeBtn">Run SMC Vision Analysis</span>
+          <span data-i18n="analyzeBtn">Execute SMC & ICT Chart Audit</span>
         </button>
       </div>
 
-      <!-- AI Output Card -->
+      <!-- AI SMC Report Output -->
       <div id="result-card" class="card hidden">
         <div class="card-header border-b">
           <div class="result-title-group">
-            <span class="mono-label">AI VERDICT</span>
+            <span class="mono-label">SMC DECISION</span>
             <span id="verdict-badge" class="verdict-badge wait">WAIT</span>
           </div>
-          <button class="btn-save-journal" onclick="saveToJournal()">+ Journal</button>
+          <button class="btn-save-journal" onclick="saveToJournal()">+ Save Setup</button>
         </div>
         <div id="ai-report-text" class="report-content"></div>
       </div>
     </section>
 
-    <!-- VIEW 2: LIVE TRADINGVIEW MARKET TERMINAL -->
+    <!-- ========================================== -->
+    <!-- VIEW 2: SMC STRUCTURE & LIQUIDITY CHART    -->
+    <!-- ========================================== -->
     <section id="view-chart" class="view">
       <div class="card chart-card">
-        <div class="card-header">
-          <span id="chart-pair-title" class="mono-label">XAU/USD • LIVE FEED</span>
-          <span class="live-indicator">● REAL-TIME</span>
+        <div class="card-header" style="margin-bottom:10px;">
+          <div>
+            <h2 id="chart-pair-title" style="font-family:var(--font-mono);">XAU/USD • H4 SMC MAP</h2>
+            <p id="smc-bias-sub" style="color:var(--bull);font-family:var(--font-mono);">BIAS: BULLISH • DISCOUNT ZONE</p>
+          </div>
+          <div class="chart-mode-pills">
+            <button id="btn-mode-smc" class="mode-pill active" onclick="setChartMode('smc')">SMC Zones</button>
+            <button id="btn-mode-tv" class="mode-pill" onclick="setChartMode('tv')">Live TV</button>
+          </div>
         </div>
-        <div id="tv-container" class="tv-frame"></div>
+
+        <!-- SMC Layer Toggles -->
+        <div id="smc-layers" class="layer-bar">
+          <label class="layer-chk"><input type="checkbox" id="chk-ob" checked onchange="renderSMCMap()"> OB (POI)</label>
+          <label class="layer-chk"><input type="checkbox" id="chk-fvg" checked onchange="renderSMCMap()"> FVG</label>
+          <label class="layer-chk"><input type="checkbox" id="chk-liq" checked onchange="renderSMCMap()"> BSL/SSL</label>
+          <label class="layer-chk"><input type="checkbox" id="chk-eq" checked onchange="renderSMCMap()"> 50% EQ</label>
+        </div>
+
+        <!-- Interactive SMC Canvas -->
+        <div id="smc-canvas-wrap" class="smc-frame">
+          <div id="lw-smc-chart" style="width:100%;height:100%;"></div>
+        </div>
+
+        <!-- Live TradingView Widget -->
+        <div id="tv-container" class="tv-frame hidden"></div>
+
+        <!-- Institutional POI Levels Readout -->
+        <div id="poi-grid" class="poi-grid"></div>
       </div>
     </section>
 
-    <!-- VIEW 3: EXECUTION JOURNAL -->
+    <!-- ========================================== -->
+    <!-- VIEW 3: 100-POINT SMC CONFLUENCE ENGINE    -->
+    <!-- ========================================== -->
+    <section id="view-strategy" class="view">
+      <div class="card">
+        <div class="card-header border-b">
+          <div>
+            <h2 data-i18n="matrixTitle">SMC 100-Point Confluence Matrix</h2>
+            <p data-i18n="matrixSub">Verify institutional rules before pulling the trigger</p>
+          </div>
+          <div class="score-box">
+            <span id="total-score" class="score-num">0</span><span class="score-max">/100</span>
+          </div>
+        </div>
+
+        <div class="checklist-stack">
+          <label class="rule-row">
+            <div class="rule-info">
+              <input type="checkbox" class="smc-rule" data-pts="20" onchange="evaluateSMCMatrix()">
+              <div>
+                <div class="rule-title">1. D1 Higher Timeframe Alignment</div>
+                <div class="rule-desc">Overall trend & Premium/Discount zone aligned</div>
+              </div>
+            </div>
+            <span class="rule-pts">+20</span>
+          </label>
+
+          <label class="rule-row">
+            <div class="rule-info">
+              <input type="checkbox" class="smc-rule" data-pts="20" onchange="evaluateSMCMatrix()">
+              <div>
+                <div class="rule-title">2. H4 BOS & Unmitigated OB / FVG</div>
+                <div class="rule-desc">Clean displacement leaving institutional POI</div>
+              </div>
+            </div>
+            <span class="rule-pts">+20</span>
+          </label>
+
+          <label class="rule-row">
+            <div class="rule-info">
+              <input type="checkbox" class="smc-rule" data-pts="15" onchange="evaluateSMCMatrix()">
+              <div>
+                <div class="rule-title">3. Liquidity Sweep (BSL / SSL / IDM)</div>
+                <div class="rule-desc">Asian High/Low or EQH/EQL swept before POI tap</div>
+              </div>
+            </div>
+            <span class="rule-pts">+15</span>
+          </label>
+
+          <label class="rule-row">
+            <div class="rule-info">
+              <input type="checkbox" class="smc-rule" data-pts="20" onchange="evaluateSMCMatrix()">
+              <div>
+                <div class="rule-title">4. H1 / 15M LTF CHoCH Confirmation</div>
+                <div class="rule-desc">Market Structure Shift inside HTF Order Block</div>
+              </div>
+            </div>
+            <span class="rule-pts">+20</span>
+          </label>
+
+          <label class="rule-row">
+            <div class="rule-info">
+              <input type="checkbox" class="smc-rule" data-pts="15" onchange="evaluateSMCMatrix()">
+              <div>
+                <div class="rule-title">5. Minimum 1:2+ RRR & Scale-Out Plan</div>
+                <div class="rule-desc">50% partial at TP1 (1:2) + SL to Breakeven</div>
+              </div>
+            </div>
+            <span class="rule-pts">+15</span>
+          </label>
+
+          <label class="rule-row">
+            <div class="rule-info">
+              <input type="checkbox" class="smc-rule" data-pts="10" onchange="evaluateSMCMatrix()">
+              <div>
+                <div class="rule-title">6. High-Impact News & Kill Zone Filter</div>
+                <div class="rule-desc">No CPI/NFP/FOMC within ±30m; active London/NY KZ</div>
+              </div>
+            </div>
+            <span class="rule-pts">+10</span>
+          </label>
+        </div>
+
+        <!-- Strategy Verdict Box -->
+        <div id="matrix-verdict-box" class="verdict-panel wait">
+          <div class="verdict-top">
+            <span class="mono-label">SYSTEM EXECUTION SIGNAL</span>
+            <span id="matrix-badge" class="verdict-badge wait">WAIT</span>
+          </div>
+          <div id="matrix-verdict-msg" class="verdict-msg">
+            Score below 70. Wait for liquidity sweep and LTF CHoCH confirmation inside POI.
+          </div>
+        </div>
+      </div>
+
+      <!-- Institutional Rules Quick Reference -->
+      <div class="card">
+        <div class="card-header" style="margin-bottom:8px;">
+          <h2>SMC Execution Protocol</h2>
+        </div>
+        <ul class="protocol-list">
+          <li><strong>Kill Zones:</strong> Asian Range (00–06 UTC) builds liquidity; London (07–10 UTC) & NY (12–15 UTC) sweep & expand.</li>
+          <li><strong>Entry Trigger:</strong> Never enter blindly on limit if price blows through OB—wait for 15M/5M CHoCH + fresh FVG return.</li>
+          <li><strong>Trade Management:</strong> Close 50% at TP1 (1:2 RRR) and shift SL to Breakeven; hold runner for opposing BSL/SSL.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- VIEW 4: EXECUTION JOURNAL                  -->
+    <!-- ========================================== -->
     <section id="view-journal" class="view">
       <div class="card">
         <div class="card-header">
@@ -149,24 +287,32 @@
 
   </main>
 
-  <!-- Bottom Mobile Tab Bar -->
+  <!-- Bottom 4-Tab Mobile Navigation Bar -->
   <nav class="bottom-nav">
     <button class="nav-item active" data-target="view-ai" onclick="switchView('view-ai', this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path>
         <circle cx="12" cy="12" r="3"></circle>
       </svg>
       <span>AI Vision</span>
     </button>
     <button class="nav-item" data-target="view-chart" onclick="switchView('view-chart', this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline>
         <polyline points="16 7 22 7 22 13"></polyline>
       </svg>
-      <span>Market</span>
+      <span>SMC Map</span>
+    </button>
+    <button class="nav-item" data-target="view-strategy" onclick="switchView('view-strategy', this)">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+        <path d="M2 17l10 5 10-5"></path>
+        <path d="M2 12l10 5 10-5"></path>
+      </svg>
+      <span>Strategy</span>
     </button>
     <button class="nav-item" data-target="view-journal" onclick="switchView('view-journal', this)">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
         <polyline points="14 2 14 8 20 8"></polyline>
         <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -183,7 +329,7 @@
         <h3>OpenRouter Vision API</h3>
         <button class="close-btn" onclick="toggleModal('api-modal')">&times;</button>
       </div>
-      <p class="modal-desc">Stored locally in your browser. No credit card required for free vision models.</p>
+      <p class="modal-desc">Stored locally in your browser. Free vision models require zero credit card.</p>
       <div class="form-group">
         <label>API Key (<a href="https://openrouter.ai/keys" target="_blank">Get Free Key ↗</a>)</label>
         <input type="password" id="api-key-input" placeholder="sk-or-v1-..." />
@@ -202,4 +348,5 @@
 
   <script src="app.js"></script>
 </body>
-</html>
+              </html>
+      
